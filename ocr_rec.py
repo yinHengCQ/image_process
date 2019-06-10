@@ -24,4 +24,12 @@ cv2.imshow('gradient',cv2.morphologyEx(img, cv2.MORPH_GRADIENT, kernel))
 cv2.imshow('tophat',cv2.morphologyEx(img, cv2.MORPH_TOPHAT, kernel))
 
 
+cv2.imshow('GaussianBlur3',cv2.GaussianBlur(img,(3,3),0))
+cv2.imshow('GaussianBlur5',cv2.GaussianBlur(img,(5,5),0))
+cv2.imshow('GaussianBlur7',cv2.GaussianBlur(img,(7,7),0))
+cv2.imshow('blur3',cv2.blur(img, (3,3)))
+cv2.imshow('blur5',cv2.blur(img, (5,5)))
+cv2.imshow('blur7',cv2.blur(img, (7,7)))
+
+
 cv2.waitKey(0)
