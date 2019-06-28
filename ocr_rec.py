@@ -3,6 +3,8 @@ import numpy as np
 
 
 img=cv2.imread('./data/img_0000001.jpg')
+rows,cols,ch = img.shape
+
 
 cv2.imshow('image',img)
 cv2.imshow('GRAY',cv2.cvtColor(img,cv2.COLOR_BGR2GRAY))
@@ -31,5 +33,9 @@ cv2.imshow('blur3',cv2.blur(img, (3,3)))
 cv2.imshow('blur5',cv2.blur(img, (5,5)))
 cv2.imshow('blur7',cv2.blur(img, (7,7)))
 
+##########################字体倾斜角度##########################
+cv2.imshow('sheare-10',cv2.warpAffine(img, np.array([[1, np.tan(-10 * np.pi / 180), 0],[0, 1, 0]], dtype=np.float32), (cols, rows)))
+cv2.imshow('sheare10',cv2.warpAffine(img, np.array([[1, np.tan(10 * np.pi / 180), 0],[0, 1, 0]], dtype=np.float32), (cols, rows)))
+################################################################
 
 cv2.waitKey(0)
