@@ -20,8 +20,9 @@ import numpy as np
 # with open("./out.txt","w",encoding="utf-8") as f:
 #     f.write(out)
 
-img=cv2.imread("./1_new.jpg")
-rows,cols,ch = img.shape
+# img=cv2.imread("./1_new.jpg")
+# img=cv2.imread('./data/img_0000001.jpg')
+# rows,cols,ch = img.shape
 
 # pts1 = np.float32([[56,65],[368,52],[28,387],[389,390]])
 # pts2 = np.float32([[0,0],[300,0],[0,300],[300,300]])
@@ -30,16 +31,32 @@ rows,cols,ch = img.shape
 #
 # dst = cv2.warpPerspective(img,M,(300,300))
 
-print(rows)
-print(cols)
-pts1 = np.float32([[0,5],[282,5],[5,282]])
-pts2 = np.float32([[0,0],[282,0],[0,282]])
+# print(rows)
+# print(cols)
+# pts1 = np.float32([[0,5],[282,5],[5,282]])
+# pts2 = np.float32([[0,0],[282,0],[0,282]])
+#
+# M = cv2.getAffineTransform(pts1,pts2)
+#
+# dst = cv2.warpAffine(img,M,(cols,rows))
+#
+# cv2.imshow('input',img)
+# cv2.imshow('output',dst)
 
-M = cv2.getAffineTransform(pts1,pts2)
+# cv2.waitKey(0)
 
-dst = cv2.warpAffine(img,M,(cols,rows))
 
-cv2.imshow('input',img)
-cv2.imshow('output',dst)
+img = cv2.imread('./data/img_0000001.jpg')
+rows, cols, ch = img.shape
 
-cv2.waitKey(0)
+pts1 = np.float32([[0, 0], [cols - 1, 0], [0, rows - 1]])
+pts2 = np.float32([[cols * 0.2, rows * 0.1], [cols * 0.9, rows * 0.2], [cols * 0.1, rows * 0.9]])
+cv2.imshow('image1', cv2.warpAffine(img, cv2.getAffineTransform(pts1, pts2), (cols, rows)))
+
+pts3 = np.float32([[0, 0], [cols - 1, 0], [0, rows - 1]])
+pts4 = np.float32([[cols * 0.1, rows * 0.1], [cols * 0.98, rows * 0.2], [cols * 0.02, rows * 0.9]])
+cv2.imshow('image2', cv2.warpAffine(img, cv2.getAffineTransform(pts3, pts4), (cols, rows)))
+
+
+k = cv2.waitKey(0)
+
