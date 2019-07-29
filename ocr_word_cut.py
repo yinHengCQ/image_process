@@ -8,21 +8,10 @@ from math import *
 ###########将直方图转化成横置图###########
 def convert_histogram(origin_img,word_count):
     width, height = origin_img.size
-    bound_size = height % word_count
-    if bound_size % 2 == 0:
-        top, down = bound_size / 2, bound_size / 2
-    else:
-        top, down = bound_size // 2, bound_size // 2 + 1
-    per_height = int((height - top - down) / word_count)
-    img_array = np.asanyarray(origin_img)[int(top):int(height - down), :, :]
-    out = None
+    per_height = round(height / word_count)
+    out = Image.new('RGB', (width * word_count, per_height))
     for index in range(word_count):
-        st = index * per_height
-        ed = (index + 1) * per_height
-        if out is None:
-            out = img_array[st:ed, :, :]
-        else:
-            out = np.concatenate([out, img_array[st:ed, :, :]], axis=1)
+        out.paste(origin_img.crop((0, index * per_height, width, (index + 1) * per_height)),(index * width, 0, (index + 1) * width, per_height))
     return out
 
 
@@ -37,6 +26,19 @@ def convert_word_height(origin_img,word_count,random_height=10):
         ed = (index + 1) * per_width
         n = random.randint(height, height + random_height)
         out[n - height:n, st:ed, :] = img_array[:, st:ed, :]
+    return out
+
+
+###########将横置图转化成单个字体依次高低###########
+def convert_word_height_v1(origin_img,word_count,skew=10):
+    width, height = origin_img.size
+    per_width = round(width / word_count)
+    out = Image.new('RGB', (per_width * word_count, height+skew))
+    skew_rate=round(0 if word_count==1 else skew/(word_count-1))
+    for index in range(word_count):
+        n=index*skew_rate
+        out.paste(Image.fromarray(cv2.copyMakeBorder(np.asanyarray(origin_img.crop((index * per_width, 0, (index + 1) * per_width, height))), n, skew-n, 0, 0, cv2.BORDER_REPLICATE)),
+                  (index *per_width, 0, (index + 1) * per_width, height+skew))
     return out
 
 
@@ -153,9 +155,7 @@ def generate_specify_word_dict_from_dir(word_img_dir,out_file):
         json.dump(new_word_img_dict,f,ensure_ascii=False)
 
 
-
-
 # cut_specify_word_img_demo()
 # convert_specify_word_dict("./word_img_dict.json","./specify_word_dict.json")
-joint_specify_word_img("./specify_word_dict.json","D:/all_data/ocr1/specify_word_img_bak","D:/all_data/ocr1/joint","./joint_text_dict.json")
+# joint_specify_word_img("./specify_word_dict.json","D:/all_data/ocr1/specify_word_img_bak","D:/all_data/ocr1/joint","./joint_text_dict.json")
 # generate_specify_word_dict_from_dir("D:/all_data/ocr1/specify_word_img_bak","./specify_word_dict.json")
