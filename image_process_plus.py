@@ -18,12 +18,15 @@ def convert_histogram(origin_img,word_count):
     return out
 
 
-def convert_histogram_v1(origin_img,word_count):
+def convert_histogram_v1(origin_img,word_count,skew=10):
     width, height = origin_img.size
-    per_height = int(height / word_count)
-    out = Image.new('RGB', (width * word_count, per_height))
+    per_width = round(width / word_count)
+    out = Image.new('RGB', (per_width * word_count, height+skew))
+    skew_rate=round(0 if word_count==1 else skew/(word_count-1))
     for index in range(word_count):
-        out.paste(origin_img.crop((0, index * per_height, width, (index + 1) * per_height)),(index * width, 0, (index + 1) * width, per_height))
+        n=index*skew_rate
+        out.paste(Image.fromarray(cv2.copyMakeBorder(np.asanyarray(origin_img.crop((index * per_width, 0, (index + 1) * per_width, height))), n, skew-n, 0, 0, cv2.BORDER_REPLICATE)),
+                  (index *per_width, 0, (index + 1) * per_width, height+skew))
     return out
 
 
