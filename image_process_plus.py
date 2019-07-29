@@ -3,6 +3,30 @@ import os,json,cv2
 import numpy as np
 
 
+def convert_histogram(origin_img,word_count):
+    width, height = origin_img.size
+    per_height = int(height / word_count)
+    img_array = np.asanyarray(origin_img)
+    out = None
+    for index in range(word_count):
+        st = index * per_height
+        ed = (index + 1) * per_height
+        if out is None:
+            out = img_array[st:ed, :, :]
+        else:
+            out = np.concatenate([out, img_array[st:ed, :, :]], axis=1)
+    return out
+
+
+def convert_histogram_v1(origin_img,word_count):
+    width, height = origin_img.size
+    per_height = int(height / word_count)
+    out = Image.new('RGB', (width * word_count, per_height))
+    for index in range(word_count):
+        out.paste(origin_img.crop((0, index * per_height, width, (index + 1) * per_height)),(index * width, 0, (index + 1) * width, per_height))
+    return out
+
+
 def convert_image(file_name,index,err_index):
     txt_dict=dict()
     # kernel = np.ones((2, 2), np.uint8)
@@ -18,9 +42,9 @@ def convert_image(file_name,index,err_index):
                     continue
                 temp_img=Image.open('./data/image_train/{}jpg'.format(file_name[:-3])).crop(loc)
 
-                ################判断是否是竖长型图片###############################
+                ################判断是否是竖长型图片，如果是就切分并重新拼接###############################
                 if len(temp_text) > 1 and (abs(float(text_list[1])-float(text_list[5]))/abs(float(text_list[0])-float(text_list[4]))>2):
-                    temp_img=temp_img.rotate(90, expand=1)
+                    temp_img=convert_histogram(temp_img)
                 ###################################################################
 
                 temp_width=int(32*(temp_img.width/temp_img.height))
