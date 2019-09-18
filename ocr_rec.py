@@ -59,18 +59,18 @@ cv2.imshow('blur5',cv2.blur(img, (5,5)))
 cv2.imshow('blur7',cv2.blur(img, (7,7)))
 
 ##########################字体倾斜角度##########################
-cv2.imshow('sheare-10',cv2.warpAffine(img, np.array([[1, np.tan(-10 * np.pi / 180), 0],[0, 1, 0]], dtype=np.float32), (cols, rows),borderMode=cv2.BORDER_CONSTANT,borderValue=[int(i) for i in img[0][0]]))
-cv2.imshow('sheare10',cv2.warpAffine(img, np.array([[1, np.tan(10 * np.pi / 180), 0],[0, 1, 0]], dtype=np.float32), (cols, rows),borderMode=cv2.BORDER_CONSTANT,borderValue=[int(i) for i in img[0][0]]))
+cv2.imshow('sheare-10',cv2.warpAffine(img, np.array([[1, np.tan(-10 * np.pi / 180), 0],[0, 1, 0]], dtype=np.float32), (cols, rows)))
+cv2.imshow('sheare10',cv2.warpAffine(img, np.array([[1, np.tan(10 * np.pi / 180), 0],[0, 1, 0]], dtype=np.float32), (cols, rows)))
 ################################################################
 
 ##########################字体倾斜角度##########################
 pts1 = np.float32([[0, 0], [cols, 0], [0, rows]])
 pts2 = np.float32([[-cols * 0.02, rows * 0], [cols * 0.98, rows * 0.1], [cols * 0, rows * 1]])
-cv2.imshow('image_left', cv2.warpAffine(img, cv2.getAffineTransform(pts1, pts2), (cols, rows),borderMode=cv2.BORDER_CONSTANT,borderValue=[int(i) for i in img[0][0]]))
+cv2.imshow('image_left', cv2.warpAffine(img, cv2.getAffineTransform(pts1, pts2), (cols, rows)))
 
 pts3 = np.float32([[0, 0], [cols, 0], [0, rows]])
 pts4 = np.float32([[cols * 0.02, rows * 0], [cols * 0.98, rows * 0.1], [cols * 0, rows * 1]])
-cv2.imshow('image_right', cv2.warpAffine(img, cv2.getAffineTransform(pts3, pts4), (cols, rows),borderMode=cv2.BORDER_CONSTANT,borderValue=[int(i) for i in img[0][0]]))
+cv2.imshow('image_right', cv2.warpAffine(img, cv2.getAffineTransform(pts3, pts4), (cols, rows)))
 ################################################################
 
 cv2.waitKey(0)
