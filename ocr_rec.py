@@ -73,4 +73,13 @@ pts4 = np.float32([[cols * 0.02, rows * 0], [cols * 0.98, rows * 0.1], [cols * 0
 cv2.imshow('image_right', cv2.warpAffine(img, cv2.getAffineTransform(pts3, pts4), (cols, rows)))
 ################################################################
 
+###########################锐化#################################
+def custom_blur_demo(image):
+    kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]], np.float32)  # 锐化
+    dst = cv2.filter2D(image, -1, kernel=kernel)
+    cv2.imshow("custom_blur_demo", dst)
+cv2.imshow("input image", img)
+custom_blur_demo(img)
+################################################################
+
 cv2.waitKey(0)
